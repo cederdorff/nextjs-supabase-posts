@@ -12,11 +12,14 @@ export const metadata = {
 async function signUp(formData) {
   "use server";
 
+  const name = formData.get("name");
   const email = formData.get("email");
   const password = formData.get("password");
 
+  // options.data is saved as raw_user_meta_data on the user in auth.users.
+  // The trigger in Supabase reads the name from there.
   const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({ email, password });
+  const { error } = await supabase.auth.signUp({ email, password, options: { data: { name } } });
 
   // Something went wrong: back to the form with ?error=true in the URL
   if (error) {
@@ -46,6 +49,9 @@ export default async function SignUpPage({ searchParams }) {
         </p>
       )}
       <form action={signUp} className="form">
+        <label htmlFor="name">Name</label>
+        <input id="name" name="name" placeholder="Your name" autoComplete="name" required />
+
         <label htmlFor="email">Email</label>
         <input id="email" name="email" type="email" placeholder="you@example.com" autoComplete="email" required />
 
