@@ -1,24 +1,64 @@
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth";
+import UserBadge from "@/components/UserBadge";
+import { getCurrentProfile, getCurrentUser } from "@/lib/auth";
 import { signOut } from "@/lib/actions";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
   title: "Profile",
 };
 
-export default async function ProfilePage() {
-  // A Server Component: the check runs on the server, before any HTML is sent
+async function updateProfile(formData) {
+  "use server";
+
+  // A Server Action is its own request, so we check the user again
   const user = await getCurrentUser();
 
   if (!user) {
     redirect("/login");
   }
 
+  // .eq("id", user.sub): only your own row – never an id from the form
+  const supabase = await createClient();
+  await supabase
+    .from("users")
+    .update({
+      name: formData.get("name").trim(),
+      title: formData.get("title").trim(),
+      image: formData.get("image").trim(),
+    })
+    .eq("id", user.sub);
+
+  redirect("/profile");
+}
+
+export default async function ProfilePage() {
+  const profile = await getCurrentProfile();
+
+  if (!profile) {
+    redirect("/login");
+  }
+
   return (
     <main>
       <h1>Profile</h1>
-      <p>Email: {user.email}</p>
-      <p>User id: {user.sub}</p>
+      <UserBadge user={profile} />
+
+      <form action={updateProfile} className="form">
+        <label htmlFor="name">Name</label>
+        <input id="name" name="name" defaultValue={profile.name} required />
+
+        <label htmlFor="title">Title</label>
+        <input id="title" name="title" placeholder="Student" defaultValue={profile.title ?? ""} />
+
+        <label htmlFor="image">Image URL</label>
+        <input id="image" name="image" type="url" placeholder="https://..." defaultValue={profile.image ?? ""} />
+
+        <button type="submit">Save</button>
+      </form>
+
+      <p>Email: {profile.mail}</p>
+      <p>User id: {profile.id}</p>
       <form action={signOut} className="form">
         <button type="submit">Log out</button>
       </form>
