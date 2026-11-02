@@ -43,3 +43,20 @@ email  text           mail        text              caption     text
 | `/signup` | `app/signup/page.js` | Opret en bruger |
 | `/login` | `app/login/page.js` | Log ind |
 | `/profile` | `app/profile/page.js` | E-mail, bruger-id og log ud · kun logget ind |
+
+## Løsninger
+
+`main` er startpunktet. Hver opgave har sin egen branch, der viser projektet, som det ser ud, når opgaven er løst. Klik på "diff" for kun at se det, der er nyt i den opgave. Opgaven står i [User management, roller og Row Level Security](https://github.com/cederdorff/mdu-e25ixd/blob/main/undervisning/dynamic-user-interface/opgave-2026-11-10-user-management-roller-og-rls.md).
+
+| Opgave | Branch | Ændring |
+| --- | --- | --- |
+| 1 · Hent startprojektet | [main](https://github.com/cederdorff/nextjs-supabase-posts/tree/main) | |
+| 2 · Kobl users til auth.users | [opgave-02-kobl-users](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-02-kobl-users) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/main...opgave-02-kobl-users) |
+| 3 · Din profil fra users | [opgave-03-profil](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-03-profil) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-02-kobl-users...opgave-03-profil) |
+| 4 · Opret posts som dig selv | [opgave-04-opret-posts](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-04-opret-posts) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-03-profil...opgave-04-opret-posts) |
+| 5 · Kun dine egne posts | [opgave-05-egne-posts](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-05-egne-posts) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-04-opret-posts...opgave-05-egne-posts) |
+| 6 · Row Level Security | [opgave-06-rls](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-06-rls) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-05-egne-posts...opgave-06-rls) |
+| 7 · Roller: user og admin | [opgave-07-roller](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-07-roller) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-06-rls...opgave-07-roller) |
+| Ekstra · Admin-siden | [ekstra-admin](https://github.com/cederdorff/nextjs-supabase-posts/tree/ekstra-admin) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-07-roller...ekstra-admin) |
+
+Prøv selv først. Brug løsningen, når du sidder fast, eller når du vil sammenligne med din egen.
