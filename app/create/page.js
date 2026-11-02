@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { CURRENT_USER_ID } from "@/lib/current-user";
+import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
@@ -9,11 +9,19 @@ export const metadata = {
 async function createPost(formData) {
   "use server";
 
+  // The Server Action can be called without the page, so it checks the user too
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
   const supabase = await createClient();
   const { error } = await supabase.from("posts").insert({
     caption: formData.get("caption").trim(),
     image: formData.get("image").trim(),
-    user_id: CURRENT_USER_ID,
+    // The id comes from the session on the server – never from the form
+    user_id: user.sub,
   });
 
   if (error) {
@@ -25,6 +33,12 @@ async function createPost(formData) {
 
 export default async function CreatePage({ searchParams }) {
   const { error } = await searchParams;
+
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/login");
+  }
 
   return (
     <main>
