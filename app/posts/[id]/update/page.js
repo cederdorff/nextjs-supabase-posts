@@ -1,4 +1,5 @@
 import { notFound, redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
@@ -16,8 +17,21 @@ export default async function UpdatePage({ params, searchParams }) {
     notFound();
   }
 
+  // Only the one who wrote the post may edit it
+  const user = await getCurrentUser();
+
+  if (user?.sub !== post.user_id) {
+    redirect(`/posts/${id}`);
+  }
+
   async function updatePost(formData) {
     "use server";
+
+    const user = await getCurrentUser();
+
+    if (user?.sub !== post.user_id) {
+      redirect(`/posts/${id}`);
+    }
 
     const supabase = await createClient();
     const { error } = await supabase
