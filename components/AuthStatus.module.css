@@ -1,0 +1,33 @@
+.status {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.login,
+.email {
+  color: var(--foreground);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login:hover,
+.email:hover {
+  color: var(--accent);
+}
+
+.logout {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.logout:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
