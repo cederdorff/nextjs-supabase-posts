@@ -33,7 +33,7 @@ email  text   samme id     mail   text             createdAt  timestamptz
                            role   text
 ```
 
-Det nye: Den, der er logget ind, er en række i `users` – med samme `id` som i Authentication. Når nogen opretter en bruger, kommer de automatisk også i `users`.
+Det nye: Den, der er logget ind, er en række i `users` – med samme `id` som i Authentication. Appen opretter rækken, når nogen laver en bruger på `/signup` (opgave 2).
 
 Alt i databasen kommer fra én fil: [`supabase/setup.sql`](supabase/setup.sql). Den kan køres igen, hvis du vil starte forfra.
 
@@ -56,7 +56,7 @@ Alt i databasen kommer fra én fil: [`supabase/setup.sql`](supabase/setup.sql). 
 | Opgave | Branch | Ændring |
 | --- | --- | --- |
 | 1 · Kom i gang | [main](https://github.com/cederdorff/nextjs-supabase-posts/tree/main) | |
-| 2 · Din profil | [opgave-02-profil](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-02-profil) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/main...opgave-02-profil) |
+| 2 · Din række i users | [opgave-02-profil](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-02-profil) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/main...opgave-02-profil) |
 | 3 · Posts får en ejer | [opgave-03-ejer](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-03-ejer) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-02-profil...opgave-03-ejer) |
 | 4 · Kun ejeren kan rette og slette | [opgave-04-kun-ejeren](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-04-kun-ejeren) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-03-ejer...opgave-04-kun-ejeren) |
 | 5 · Beskyt databasen | Ingen kode – et klik i Supabase | |

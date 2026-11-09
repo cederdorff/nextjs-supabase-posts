@@ -4,6 +4,7 @@
 -- It deletes everything and creates it again, so you can run it again to start over.
 -- ============================================
 
+-- A trigger from an earlier version of this file
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS users;
@@ -14,6 +15,7 @@ DROP FUNCTION IF EXISTS public.is_admin();
 -- USERS
 -- The same columns as in Post App – plus role.
 -- id is the same id as the user's login in auth.users.
+-- The app creates the row when someone signs up (task 2).
 -- ============================================
 
 CREATE TABLE users (
@@ -37,32 +39,6 @@ CREATE TABLE posts (
     image TEXT NOT NULL,
     "userId" UUID NOT NULL REFERENCES users (id) ON DELETE CASCADE
 );
-
--- ============================================
--- TRIGGER
--- Every new login in auth.users gets a row in users with the same id.
--- The name comes from sign up – or from the email.
--- ============================================
-
-CREATE FUNCTION public.handle_new_user()
-RETURNS TRIGGER
-LANGUAGE plpgsql
-SECURITY DEFINER SET search_path = ''
-AS $$
-BEGIN
-    INSERT INTO public.users (id, name, mail)
-    VALUES (
-        NEW.id,
-        COALESCE(NEW.raw_user_meta_data ->> 'name', split_part(NEW.email, '@', 1)),
-        NEW.email
-    );
-    RETURN NEW;
-END;
-$$;
-
-CREATE TRIGGER on_auth_user_created
-    AFTER INSERT ON auth.users
-    FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
 -- ============================================
 -- IS_ADMIN()
@@ -105,6 +81,11 @@ ON users FOR SELECT
 TO anon, authenticated
 USING (true);
 
+CREATE POLICY "Users can create their own profile"
+ON users FOR INSERT
+TO authenticated
+WITH CHECK ((SELECT auth.uid()) = id);
+
 CREATE POLICY "Users can update their own profile"
 ON users FOR UPDATE
 TO authenticated
@@ -139,7 +120,7 @@ USING (public.is_admin());
 
 -- ============================================
 -- SEED DATA
--- Everyone who can already log in gets a row in users.
+-- Everyone who can already log in gets a row in users – new users get it from the app.
 -- The 10 posts from Post App belong to the first user who signed up.
 -- ============================================
 
