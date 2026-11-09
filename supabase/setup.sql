@@ -91,7 +91,7 @@ CREATE TABLE posts (
 
 -- ============================================
 -- IS_ADMIN()
--- true if the logged-in user has the role admin. Used in the policy for admins below.
+-- true if the logged-in user has the role admin. Used in the policies for admins below.
 -- ============================================
 
 CREATE FUNCTION public.is_admin()
@@ -161,6 +161,12 @@ CREATE POLICY "Owners can delete their posts"
 ON posts FOR DELETE
 TO authenticated
 USING ((SELECT auth.uid()) = "userId");
+
+CREATE POLICY "Admins can update all posts"
+ON posts FOR UPDATE
+TO authenticated
+USING (public.is_admin())
+WITH CHECK (public.is_admin());
 
 CREATE POLICY "Admins can delete all posts"
 ON posts FOR DELETE
