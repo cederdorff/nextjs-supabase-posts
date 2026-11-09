@@ -21,9 +21,10 @@ export default async function PostDetailPage({ params }) {
     notFound();
   }
 
-  // Is the logged-in user the one who wrote the post?
+  // Is the logged-in user the one who wrote the post – or an admin?
   const profile = await getCurrentProfile();
   const isOwner = profile?.id === post.userId;
+  const isAdmin = profile?.role === "admin";
 
   async function deletePost() {
     "use server";
@@ -31,7 +32,7 @@ export default async function PostDetailPage({ params }) {
     // Hiding the button is not enough – the Server Action checks again
     const profile = await getCurrentProfile();
 
-    if (profile?.id !== post.userId) {
+    if (profile?.id !== post.userId && profile?.role !== "admin") {
       redirect(`/posts/${id}`);
     }
 
@@ -52,11 +53,13 @@ export default async function PostDetailPage({ params }) {
           <p className={styles.meta}>
             {new Date(post.createdAt).toLocaleDateString("da-DK")}
           </p>
-          {isOwner && (
+          {(isOwner || isAdmin) && (
             <form action={deletePost} className={styles.actions}>
-              <Link href={`/posts/${post.id}/update`} className="button">
-                Edit
-              </Link>
+              {isOwner && (
+                <Link href={`/posts/${post.id}/update`} className="button">
+                  Edit
+                </Link>
+              )}
               <DeleteButton />
             </form>
           )}
