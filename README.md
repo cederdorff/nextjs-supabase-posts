@@ -17,7 +17,7 @@ Det er det, du retter i dag.
 1. Klik på **Use this template → Create a new repository**, og klon dit nye repository i VS Code eller GitHub Desktop.
 2. Kør `npm install` i terminalen.
 3. Kopiér `.env.example` til `.env.local`, og indsæt URL og publishable key fra **Connect**-panelet i dit Supabase-projekt. Du kan genbruge projektet fra 30. oktober.
-4. Åbn **SQL Editor** i Supabase, indsæt hele [`supabase/setup.sql`](supabase/setup.sql), og klik på **Run**. Filen opretter `users` og `posts` med de samme 5 brugere og 10 posts som i Post App – og giver dine egne brugere en række i `users`.
+4. Åbn **SQL Editor** i Supabase, indsæt hele [`supabase/setup.sql`](supabase/setup.sql), og klik på **Run**. Filen opretter `users` og `posts` med de samme 5 brugere og 10 posts som i Post App – og giver dine egne brugere en række i `users`. De 5 brugere fra Post App kan logge ind, fx `maria@example.com` med adgangskoden `postapp123`.
 5. Kør `npm run dev`, og åbn [http://localhost:3000](http://localhost:3000).
 
 ## Datamodellen
