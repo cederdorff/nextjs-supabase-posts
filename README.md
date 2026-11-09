@@ -60,6 +60,6 @@ Alt i databasen kommer fra én fil: [`supabase/setup.sql`](supabase/setup.sql). 
 | 2 · Posts får en ejer | [opgave-02-ejer](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-02-ejer) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/main...opgave-02-ejer) |
 | 3 · Kun ejeren kan rette og slette | [opgave-03-kun-ejeren](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-03-kun-ejeren) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-02-ejer...opgave-03-kun-ejeren) |
 | 4 · Beskyt databasen | Ingen kode – et klik i Supabase | |
-| Ekstra · Profil og admin | [ekstra](https://github.com/cederdorff/nextjs-supabase-posts/tree/ekstra) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-03-kun-ejeren...ekstra) |
+| 5 · Profil og roller | [opgave-05-roller](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-05-roller) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-03-kun-ejeren...opgave-05-roller) |
 
 Prøv selv først. Brug løsningen, når du sidder fast, eller når du vil sammenligne med din egen.
