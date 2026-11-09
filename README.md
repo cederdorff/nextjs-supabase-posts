@@ -21,17 +21,19 @@ Det er det, du retter i dag.
 
 ## Datamodellen
 
-Kolonnerne er de samme som i Post App. Det nye er, at alle id'er er `uuid`, og at `users.id` er det samme id som i `auth.users`.
+Den samme relation som i Post App: Et post er lavet af én user, og en user kan lave mange posts. `posts.userId` peger på `users.id`.
 
 ```text
-auth.users            users                      posts
-(Supabase Auth)       id     uuid  PK  <-------  userId     uuid  FK
-id     uuid  ------>  name   text                id         uuid  PK
-email  text  trigger  mail   text                createdAt  timestamptz
-...                   title  text                caption    text
-                      image  text                image      text
-                      role   text (user | admin)
+Login                      users                   posts
+(Authentication → Users)   id     uuid  <------    userId     uuid
+id     uuid  ---------->   name   text             id         uuid
+email  text   samme id     mail   text             createdAt  timestamptz
+                           title  text             caption    text
+                           image  text             image      text
+                           role   text
 ```
+
+Det nye: Den, der er logget ind, er en række i `users` – med samme `id` som i Authentication. Når nogen opretter en bruger, kommer de automatisk også i `users`.
 
 Alt i databasen kommer fra én fil: [`supabase/setup.sql`](supabase/setup.sql). Den kan køres igen, hvis du vil starte forfra.
 
@@ -49,17 +51,15 @@ Alt i databasen kommer fra én fil: [`supabase/setup.sql`](supabase/setup.sql). 
 
 ## Løsninger
 
-`main` er startpunktet. Hver opgave har sin egen branch, der viser projektet, som det ser ud, når opgaven er løst. Klik på "diff" for kun at se det, der er nyt i den opgave. Opgaven står i [User management, roller og Row Level Security](https://github.com/cederdorff/mdu-e25ixd/blob/main/undervisning/dynamic-user-interface/opgave-2026-11-10-user-management-roller-og-rls.md).
+`main` er startpunktet. Hver opgave har sin egen branch, der viser projektet, som det ser ud, når opgaven er løst. Klik på "diff" for kun at se det, der er nyt i den opgave. Opgaven står i [User management og beskyttet adgang](https://github.com/cederdorff/mdu-e25ixd/blob/main/undervisning/dynamic-user-interface/opgave-2026-11-10-user-management-roller-og-rls.md).
 
 | Opgave | Branch | Ændring |
 | --- | --- | --- |
-| 1 · Hent startprojektet | [main](https://github.com/cederdorff/nextjs-supabase-posts/tree/main) | |
-| 2 · Users og auth.users | [opgave-02-kobl-users](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-02-kobl-users) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/main...opgave-02-kobl-users) |
-| 3 · Din profil fra users | [opgave-03-profil](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-03-profil) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-02-kobl-users...opgave-03-profil) |
-| 4 · Opret posts som dig selv | [opgave-04-opret-posts](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-04-opret-posts) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-03-profil...opgave-04-opret-posts) |
-| 5 · Kun dine egne posts | [opgave-05-egne-posts](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-05-egne-posts) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-04-opret-posts...opgave-05-egne-posts) |
-| 6 · Row Level Security | Ingen kode – policies i Supabase | |
-| 7 · Roller: user og admin | [opgave-07-roller](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-07-roller) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-05-egne-posts...opgave-07-roller) |
-| Ekstra · Admin-siden | [ekstra-admin](https://github.com/cederdorff/nextjs-supabase-posts/tree/ekstra-admin) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-07-roller...ekstra-admin) |
+| 1 · Kom i gang | [main](https://github.com/cederdorff/nextjs-supabase-posts/tree/main) | |
+| 2 · Din profil | [opgave-02-profil](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-02-profil) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/main...opgave-02-profil) |
+| 3 · Posts får en ejer | [opgave-03-ejer](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-03-ejer) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-02-profil...opgave-03-ejer) |
+| 4 · Kun ejeren kan rette og slette | [opgave-04-kun-ejeren](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-04-kun-ejeren) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-03-ejer...opgave-04-kun-ejeren) |
+| 5 · Beskyt databasen | Ingen kode – et klik i Supabase | |
+| Ekstra · Admin | [ekstra-admin](https://github.com/cederdorff/nextjs-supabase-posts/tree/ekstra-admin) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-04-kun-ejeren...ekstra-admin) |
 
 Prøv selv først. Brug løsningen, når du sidder fast, eller når du vil sammenligne med din egen.

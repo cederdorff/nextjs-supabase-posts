@@ -66,7 +66,7 @@ CREATE TRIGGER on_auth_user_created
 
 -- ============================================
 -- IS_ADMIN()
--- true if the logged-in user has the role admin. Used in a policy in task 7.
+-- true if the logged-in user has the role admin. Used in the policy for admins below.
 -- ============================================
 
 CREATE FUNCTION public.is_admin()
@@ -83,17 +83,59 @@ $$;
 
 -- ============================================
 -- ACCESS
--- Row Level Security is off: anyone with the publishable key
--- can read, create, change and delete everything. You fix that in task 6.
 -- Users can only change name, title and image – never their own role.
+-- ============================================
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON users, posts TO anon, authenticated;
+REVOKE UPDATE ON users FROM anon, authenticated;
+GRANT UPDATE (name, title, image) ON users TO anon, authenticated;
+
+-- ============================================
+-- POLICIES
+-- The rules are ready, but Row Level Security is off,
+-- so anyone with the publishable key can still change everything.
+-- You turn it on in task 5: Authentication → Policies → Enable RLS.
 -- ============================================
 
 ALTER TABLE users DISABLE ROW LEVEL SECURITY;
 ALTER TABLE posts DISABLE ROW LEVEL SECURITY;
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON users, posts TO anon, authenticated;
-REVOKE UPDATE ON users FROM anon, authenticated;
-GRANT UPDATE (name, title, image) ON users TO anon, authenticated;
+CREATE POLICY "Everyone can read users"
+ON users FOR SELECT
+TO anon, authenticated
+USING (true);
+
+CREATE POLICY "Users can update their own profile"
+ON users FOR UPDATE
+TO authenticated
+USING ((SELECT auth.uid()) = id)
+WITH CHECK ((SELECT auth.uid()) = id);
+
+CREATE POLICY "Everyone can read posts"
+ON posts FOR SELECT
+TO anon, authenticated
+USING (true);
+
+CREATE POLICY "Users can create posts as themselves"
+ON posts FOR INSERT
+TO authenticated
+WITH CHECK ((SELECT auth.uid()) = "userId");
+
+CREATE POLICY "Owners can update their posts"
+ON posts FOR UPDATE
+TO authenticated
+USING ((SELECT auth.uid()) = "userId")
+WITH CHECK ((SELECT auth.uid()) = "userId");
+
+CREATE POLICY "Owners can delete their posts"
+ON posts FOR DELETE
+TO authenticated
+USING ((SELECT auth.uid()) = "userId");
+
+CREATE POLICY "Admins can delete all posts"
+ON posts FOR DELETE
+TO authenticated
+USING (public.is_admin());
 
 -- ============================================
 -- SEED DATA
