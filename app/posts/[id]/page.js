@@ -37,7 +37,7 @@ export default async function PostDetailPage({ params }) {
           <UserBadge user={post.user} />
           <p className={styles.caption}>{post.caption}</p>
           <p className={styles.meta}>
-            Post #{post.id} · {new Date(post.created_at).toLocaleDateString("da-DK")}
+            {new Date(post.createdAt).toLocaleDateString("da-DK")}
           </p>
           <form action={deletePost} className={styles.actions}>
             <Link href={`/posts/${post.id}/update`} className="button">

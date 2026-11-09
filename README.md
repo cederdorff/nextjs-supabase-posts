@@ -4,8 +4,8 @@ En Next.js-app med login fra Supabase Auth og en Post App med `users` og `posts`
 
 Appen virker allerede: Du kan logge ind, se alle posts med deres bruger og oprette, rette og slette posts. Men login og data hænger ikke sammen endnu:
 
-- `users` er ikke koblet til `auth.users`. En bruger, der logger ind, findes ikke i `users`.
 - Nye posts får altid det samme faste `CURRENT_USER_ID` fra `lib/current-user.js` – ligesom i Post App.
+- Profilsiden viser kun din e-mail fra login – ikke dit navn, din titel og dit billede fra `users`.
 - Alle kan rette og slette alle posts, også uden at være logget ind. Row Level Security er slået fra.
 
 Det er det, du retter i dag.
@@ -15,22 +15,25 @@ Det er det, du retter i dag.
 1. Klik på **Use this template → Create a new repository**, og klon dit nye repository i VS Code eller GitHub Desktop.
 2. Kør `npm install` i terminalen.
 3. Kopiér `.env.example` til `.env.local`, og indsæt URL og publishable key fra **Connect**-panelet i dit Supabase-projekt. Du kan genbruge projektet fra 30. oktober.
-4. Åbn **SQL Editor** i Supabase, indsæt hele [`supabase/setup.sql`](supabase/setup.sql), og klik på **Run**. Filen opretter `users` og `posts` med 5 brugere og 10 posts.
-5. Kør `npm run dev`, og åbn [http://localhost:3000](http://localhost:3000).
+4. Åbn **SQL Editor** i Supabase, indsæt hele [`supabase/setup.sql`](supabase/setup.sql), og klik på **Run**. Filen opretter `users` og `posts`, giver alle dine brugere en række i `users` og giver de 10 posts fra Post App til den første bruger.
+5. Åbn **Authentication → Users** i Supabase, kopiér en _User UID_, og indsæt den i `lib/current-user.js`.
+6. Kør `npm run dev`, og åbn [http://localhost:3000](http://localhost:3000).
 
 ## Datamodellen
 
+Kolonnerne er de samme som i Post App. Det nye er, at alle id'er er `uuid`, og at `users.id` er det samme id som i `auth.users`.
+
 ```text
-auth.users            users                         posts
-(Supabase Auth)       id          uuid  PK  <----   user_id     uuid  FK
-id     uuid    ?      name        text              id          bigint PK
-email  text           mail        text              caption     text
-...                   title       text              image       text
-                      image       text              created_at  timestamptz
-                      created_at  timestamptz
+auth.users            users                      posts
+(Supabase Auth)       id     uuid  PK  <-------  userId     uuid  FK
+id     uuid  ------>  name   text                id         uuid  PK
+email  text  trigger  mail   text                createdAt  timestamptz
+...                   title  text                caption    text
+                      image  text                image      text
+                      role   text (user | admin)
 ```
 
-`posts.user_id` peger på `users.id` – samme en-til-mange-relation som `posts.userId` → `users.id` i Post App. Spørgsmålstegnet mellem `auth.users` og `users` er dagens første opgave.
+Alt i databasen kommer fra én fil: [`supabase/setup.sql`](supabase/setup.sql). Den kan køres igen, hvis du vil starte forfra.
 
 ## Routes
 
@@ -51,12 +54,12 @@ email  text           mail        text              caption     text
 | Opgave | Branch | Ændring |
 | --- | --- | --- |
 | 1 · Hent startprojektet | [main](https://github.com/cederdorff/nextjs-supabase-posts/tree/main) | |
-| 2 · Kobl users til auth.users | [opgave-02-kobl-users](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-02-kobl-users) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/main...opgave-02-kobl-users) |
+| 2 · Users og auth.users | [opgave-02-kobl-users](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-02-kobl-users) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/main...opgave-02-kobl-users) |
 | 3 · Din profil fra users | [opgave-03-profil](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-03-profil) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-02-kobl-users...opgave-03-profil) |
 | 4 · Opret posts som dig selv | [opgave-04-opret-posts](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-04-opret-posts) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-03-profil...opgave-04-opret-posts) |
 | 5 · Kun dine egne posts | [opgave-05-egne-posts](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-05-egne-posts) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-04-opret-posts...opgave-05-egne-posts) |
-| 6 · Row Level Security | [opgave-06-rls](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-06-rls) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-05-egne-posts...opgave-06-rls) |
-| 7 · Roller: user og admin | [opgave-07-roller](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-07-roller) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-06-rls...opgave-07-roller) |
+| 6 · Row Level Security | Ingen kode – policies i Supabase | |
+| 7 · Roller: user og admin | [opgave-07-roller](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-07-roller) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-05-egne-posts...opgave-07-roller) |
 | Ekstra · Admin-siden | [ekstra-admin](https://github.com/cederdorff/nextjs-supabase-posts/tree/ekstra-admin) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-07-roller...ekstra-admin) |
 
 Prøv selv først. Brug løsningen, når du sidder fast, eller når du vil sammenligne med din egen.

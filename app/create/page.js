@@ -13,7 +13,7 @@ async function createPost(formData) {
   const { error } = await supabase.from("posts").insert({
     caption: formData.get("caption").trim(),
     image: formData.get("image").trim(),
-    user_id: CURRENT_USER_ID,
+    userId: CURRENT_USER_ID,
   });
 
   if (error) {

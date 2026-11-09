@@ -8,7 +8,7 @@ export default async function HomePage() {
   const { data: posts, error } = await supabase
     .from("posts")
     .select("*, user:users(name, title, image)")
-    .order("created_at", { ascending: false });
+    .order("createdAt", { ascending: false });
 
   if (error) {
     throw error;
