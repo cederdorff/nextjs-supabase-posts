@@ -11,15 +11,64 @@ DROP TABLE IF EXISTS users;
 DROP FUNCTION IF EXISTS public.handle_new_user();
 DROP FUNCTION IF EXISTS public.is_admin();
 
+-- The 5 demo logins from an earlier run of this file
+DELETE FROM auth.users WHERE id IN (
+    '00000000-0000-4000-8000-000000000001',
+    '00000000-0000-4000-8000-000000000002',
+    '00000000-0000-4000-8000-000000000003',
+    '00000000-0000-4000-8000-000000000004',
+    '00000000-0000-4000-8000-000000000005'
+);
+
+-- ============================================
+-- 5 DEMO LOGINS
+-- The 5 users from Post App get a real login, so you can log in as them.
+-- Password for all of them: postapp123
+-- ============================================
+
+INSERT INTO auth.users (
+    instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
+    raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
+    confirmation_token, recovery_token, email_change, email_change_token_new,
+    email_change_token_current, phone_change_token, reauthentication_token
+)
+SELECT
+    '00000000-0000-0000-0000-000000000000', demo.id, 'authenticated', 'authenticated', demo.email,
+    extensions.crypt('postapp123', extensions.gen_salt('bf')), NOW(),
+    '{"provider": "email", "providers": ["email"]}', '{}', NOW(), NOW(),
+    '', '', '', '', '', '', ''
+FROM (
+    VALUES
+        ('00000000-0000-4000-8000-000000000001'::uuid, 'rasmus@example.com'),
+        ('00000000-0000-4000-8000-000000000002'::uuid, 'maria@example.com'),
+        ('00000000-0000-4000-8000-000000000003'::uuid, 'birgitte@example.com'),
+        ('00000000-0000-4000-8000-000000000004'::uuid, 'lars@example.com'),
+        ('00000000-0000-4000-8000-000000000005'::uuid, 'nikolaj@example.com')
+) AS demo (id, email);
+
+INSERT INTO auth.identities (id, user_id, provider_id, provider, identity_data, last_sign_in_at, created_at, updated_at)
+SELECT
+    gen_random_uuid(), id, id::text, 'email',
+    jsonb_build_object('sub', id::text, 'email', email, 'email_verified', true),
+    NOW(), NOW(), NOW()
+FROM auth.users
+WHERE id IN (
+    '00000000-0000-4000-8000-000000000001',
+    '00000000-0000-4000-8000-000000000002',
+    '00000000-0000-4000-8000-000000000003',
+    '00000000-0000-4000-8000-000000000004',
+    '00000000-0000-4000-8000-000000000005'
+);
+
 -- ============================================
 -- USERS
 -- The same columns as in Post App – plus role.
--- Your own users get the same id as their login in auth.users:
--- the app creates the row when someone signs up (app/signup/page.js).
+-- id is the same id as the login in auth.users (the foreign key).
+-- The app creates the row when someone signs up (app/signup/page.js).
 -- ============================================
 
 CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY REFERENCES auth.users (id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     mail TEXT NOT NULL,
     title TEXT,
@@ -120,17 +169,17 @@ USING (public.is_admin());
 
 -- ============================================
 -- USERS SEED DATA
--- The same 5 users as in Post App. They have no login – they are just data.
+-- The same 5 users as in Post App – with the same id as their demo login.
 -- The first one is CURRENT_USER_ID in lib/current-user.js.
 -- ============================================
 
 INSERT INTO users (id, name, mail, title, image)
 VALUES
-    ('00000000-0000-4000-8000-000000000001', 'Rasmus Cederdorff', 'race@eaaa.dk', 'Senior Lecturer', 'https://raw.githubusercontent.com/cederdorff/race/master/images/users/race.webp'),
-    ('00000000-0000-4000-8000-000000000002', 'Maria Louise Bendixen', 'mlbe@eaaa.dk', 'Senior Lecturer', 'https://raw.githubusercontent.com/cederdorff/race/master/images/users/mlbe.webp'),
-    ('00000000-0000-4000-8000-000000000003', 'Birgitte Kirk Iversen', 'bki@eaaa.dk', 'Senior Lecturer', 'https://raw.githubusercontent.com/cederdorff/race/master/images/users/bki.webp'),
-    ('00000000-0000-4000-8000-000000000004', 'Lars Bøge Eskildsen', 'laes@eaaa.dk', 'Senior Lecturer', 'https://raw.githubusercontent.com/cederdorff/race/master/images/users/laes.webp'),
-    ('00000000-0000-4000-8000-000000000005', 'Nikolaj Krogh Kjær-Rasmussen', 'nkkr@eaaa.dk', 'Lecturer', 'https://raw.githubusercontent.com/cederdorff/race/master/images/users/nkkr.webp');
+    ('00000000-0000-4000-8000-000000000001', 'Rasmus Cederdorff', 'rasmus@example.com', 'Senior Lecturer', 'https://raw.githubusercontent.com/cederdorff/race/master/images/users/race.webp'),
+    ('00000000-0000-4000-8000-000000000002', 'Maria Louise Bendixen', 'maria@example.com', 'Senior Lecturer', 'https://raw.githubusercontent.com/cederdorff/race/master/images/users/mlbe.webp'),
+    ('00000000-0000-4000-8000-000000000003', 'Birgitte Kirk Iversen', 'birgitte@example.com', 'Senior Lecturer', 'https://raw.githubusercontent.com/cederdorff/race/master/images/users/bki.webp'),
+    ('00000000-0000-4000-8000-000000000004', 'Lars Bøge Eskildsen', 'lars@example.com', 'Senior Lecturer', 'https://raw.githubusercontent.com/cederdorff/race/master/images/users/laes.webp'),
+    ('00000000-0000-4000-8000-000000000005', 'Nikolaj Krogh Kjær-Rasmussen', 'nikolaj@example.com', 'Lecturer', 'https://raw.githubusercontent.com/cederdorff/race/master/images/users/nkkr.webp');
 
 -- ============================================
 -- POSTS SEED DATA
@@ -158,4 +207,5 @@ VALUES
 
 INSERT INTO users (id, name, mail)
 SELECT id, split_part(email, '@', 1), email
-FROM auth.users;
+FROM auth.users
+ON CONFLICT (id) DO NOTHING;
