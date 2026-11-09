@@ -17,10 +17,10 @@ export default async function UpdatePage({ params, searchParams }) {
     notFound();
   }
 
-  // Only the one who wrote the post may edit it
+  // Only the one who wrote the post – or an admin – may edit it
   const profile = await getCurrentProfile();
 
-  if (profile?.id !== post.userId) {
+  if (profile?.id !== post.userId && profile?.role !== "admin") {
     redirect(`/posts/${id}`);
   }
 
@@ -29,7 +29,7 @@ export default async function UpdatePage({ params, searchParams }) {
 
     const profile = await getCurrentProfile();
 
-    if (profile?.id !== post.userId) {
+    if (profile?.id !== post.userId && profile?.role !== "admin") {
       redirect(`/posts/${id}`);
     }
 

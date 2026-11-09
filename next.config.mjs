@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    // Turns on unauthorized() and forbidden(), which are still experimental
-    authInterrupts: true,
-  },
+  /* config options here */
 };
 
 export default nextConfig;

@@ -25,6 +25,7 @@ export default async function PostDetailPage({ params }) {
   const profile = await getCurrentProfile();
   const isOwner = profile?.id === post.userId;
   const isAdmin = profile?.role === "admin";
+  const canEdit = isOwner || isAdmin;
 
   async function deletePost() {
     "use server";
@@ -53,13 +54,11 @@ export default async function PostDetailPage({ params }) {
           <p className={styles.meta}>
             {new Date(post.createdAt).toLocaleDateString("da-DK")}
           </p>
-          {(isOwner || isAdmin) && (
+          {canEdit && (
             <form action={deletePost} className={styles.actions}>
-              {isOwner && (
-                <Link href={`/posts/${post.id}/update`} className="button">
-                  Edit
-                </Link>
-              )}
+              <Link href={`/posts/${post.id}/update`} className="button">
+                Edit
+              </Link>
               <DeleteButton />
             </form>
           )}
