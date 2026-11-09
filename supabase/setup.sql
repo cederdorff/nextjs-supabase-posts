@@ -189,21 +189,21 @@ VALUES
 
 -- ============================================
 -- POSTS SEED DATA
--- The same 10 posts as in Post App
+-- The same 10 posts as in Post App – one day apart and mixed, so the newest ones are by different users
 -- ============================================
 
-INSERT INTO posts (caption, image, "userId")
+INSERT INTO posts ("createdAt", caption, image, "userId")
 VALUES
-    ('Exploring the streets of Aarhus.', 'https://images.unsplash.com/photo-1559070169-a3077159ee16?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000001'),
-    ('Modern architecture at Aarhus Ø.', 'https://images.unsplash.com/photo-1625773842107-7e842ff1db2f?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000001'),
-    ('A quiet evening around Dokk1.', 'https://images.unsplash.com/photo-1537177080923-1fb15084a8cb?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000001'),
-    ('A summer afternoon in Aarhus.', 'https://images.unsplash.com/photo-1573997953524-efed43db70a0?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000002'),
-    ('Architecture and city life at Aarhus Ø.', 'https://images.unsplash.com/photo-1558443336-dbb3de50b8b2?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000002'),
-    ('A walk through the centre of Aarhus.', 'https://images.unsplash.com/photo-1612624629424-ddde915d3dc5?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000003'),
-    ('A view across the rooftops of Aarhus.', 'https://images.unsplash.com/photo-1661505216710-32316e7b5bb3?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000003'),
-    ('Enjoying a quiet moment in the city.', 'https://images.unsplash.com/photo-1545319261-f3760f9dd64d?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000004'),
-    ('Summer by the water in Aarhus.', 'https://images.unsplash.com/photo-1566241832378-917a0f30db2c?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000004'),
-    ('Colourful reflections across the city.', 'https://images.unsplash.com/photo-1548940740-204726a19be3?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000005');
+    (NOW() - INTERVAL '1 days', 'A summer afternoon in Aarhus.', 'https://images.unsplash.com/photo-1573997953524-efed43db70a0?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000002'),
+    (NOW() - INTERVAL '2 days', 'Enjoying a quiet moment in the city.', 'https://images.unsplash.com/photo-1545319261-f3760f9dd64d?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000004'),
+    (NOW() - INTERVAL '3 days', 'Exploring the streets of Aarhus.', 'https://images.unsplash.com/photo-1559070169-a3077159ee16?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000001'),
+    (NOW() - INTERVAL '4 days', 'A walk through the centre of Aarhus.', 'https://images.unsplash.com/photo-1612624629424-ddde915d3dc5?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000003'),
+    (NOW() - INTERVAL '5 days', 'Colourful reflections across the city.', 'https://images.unsplash.com/photo-1548940740-204726a19be3?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000005'),
+    (NOW() - INTERVAL '6 days', 'Modern architecture at Aarhus Ø.', 'https://images.unsplash.com/photo-1625773842107-7e842ff1db2f?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000001'),
+    (NOW() - INTERVAL '7 days', 'Architecture and city life at Aarhus Ø.', 'https://images.unsplash.com/photo-1558443336-dbb3de50b8b2?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000002'),
+    (NOW() - INTERVAL '8 days', 'A view across the rooftops of Aarhus.', 'https://images.unsplash.com/photo-1661505216710-32316e7b5bb3?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000003'),
+    (NOW() - INTERVAL '9 days', 'Summer by the water in Aarhus.', 'https://images.unsplash.com/photo-1566241832378-917a0f30db2c?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000004'),
+    (NOW() - INTERVAL '10 days', 'A quiet evening around Dokk1.', 'https://images.unsplash.com/photo-1537177080923-1fb15084a8cb?auto=format&fit=crop&w=1200&q=80', '00000000-0000-4000-8000-000000000001');
 
 -- ============================================
 -- YOUR USERS FROM 30 OCTOBER
