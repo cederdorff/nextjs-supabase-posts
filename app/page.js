@@ -19,7 +19,7 @@ export default async function HomePage() {
     <main>
       <section className={styles.intro}>
         <h1>Explore the latest posts</h1>
-        <p>{posts.length} posts from the users table in Supabase.</p>
+        <p>{posts.length} posts – each with the user who made it.</p>
       </section>
 
       <section className={styles.grid}>
