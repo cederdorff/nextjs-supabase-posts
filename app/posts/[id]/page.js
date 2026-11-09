@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import DeleteButton from "@/components/DeleteButton";
 import UserBadge from "@/components/UserBadge";
+import { getCurrentProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import styles from "./page.module.css";
 
@@ -20,8 +21,19 @@ export default async function PostDetailPage({ params }) {
     notFound();
   }
 
+  // Is the logged-in user the one who wrote the post?
+  const profile = await getCurrentProfile();
+  const isOwner = profile?.id === post.userId;
+
   async function deletePost() {
     "use server";
+
+    // Hiding the button is not enough – the Server Action checks again
+    const profile = await getCurrentProfile();
+
+    if (profile?.id !== post.userId) {
+      redirect(`/posts/${id}`);
+    }
 
     // In Post App: fetch(`${url}/posts?id=eq.${id}`, { method: "DELETE" })
     const supabase = await createClient();
@@ -40,12 +52,14 @@ export default async function PostDetailPage({ params }) {
           <p className={styles.meta}>
             {new Date(post.createdAt).toLocaleDateString("da-DK")}
           </p>
-          <form action={deletePost} className={styles.actions}>
-            <Link href={`/posts/${post.id}/update`} className="button">
-              Edit
-            </Link>
-            <DeleteButton />
-          </form>
+          {isOwner && (
+            <form action={deletePost} className={styles.actions}>
+              <Link href={`/posts/${post.id}/update`} className="button">
+                Edit
+              </Link>
+              <DeleteButton />
+            </form>
+          )}
         </div>
       </article>
     </main>

@@ -1,4 +1,5 @@
 import { notFound, redirect } from "next/navigation";
+import { getCurrentProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
@@ -16,8 +17,21 @@ export default async function UpdatePage({ params, searchParams }) {
     notFound();
   }
 
+  // Only the one who wrote the post may edit it
+  const profile = await getCurrentProfile();
+
+  if (profile?.id !== post.userId) {
+    redirect(`/posts/${id}`);
+  }
+
   async function updatePost(formData) {
     "use server";
+
+    const profile = await getCurrentProfile();
+
+    if (profile?.id !== post.userId) {
+      redirect(`/posts/${id}`);
+    }
 
     // In Post App: fetch(`${url}/posts?id=eq.${id}`, { method: "PATCH", body: JSON.stringify(post) })
     const supabase = await createClient();
