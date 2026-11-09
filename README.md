@@ -2,11 +2,13 @@
 
 En Next.js-app med login fra Supabase Auth og en Post App med `users` og `posts` i Supabase. Startprojektet til 10. november: User management, roller og beskyttet adgang.
 
-Appen virker allerede: Du kan logge ind, se alle posts med deres bruger og oprette, rette og slette posts. Men login og data hænger ikke sammen endnu:
+Appen virker allerede: Du kan oprette en bruger, logge ind, se alle posts med deres bruger og oprette, rette og slette posts. Al kode, der henter og gemmer data, er skrevet med Supabase SDK'et – med en kommentar, der viser, hvordan det samme så ud med `fetch` i Post App.
+
+Men login og posts hænger ikke sammen endnu:
 
 - Nye posts får altid det samme faste `CURRENT_USER_ID` fra `lib/current-user.js` – ligesom i Post App.
-- Profilsiden viser kun din e-mail fra login – ikke dit navn, din titel og dit billede fra `users`.
-- Alle kan rette og slette alle posts, også uden at være logget ind. Row Level Security er slået fra.
+- Alle kan rette og slette alle posts, også uden at være logget ind.
+- Row Level Security er slået fra, så alle med din publishable key kan ændre alt.
 
 Det er det, du retter i dag.
 
@@ -32,7 +34,7 @@ email  text   samme id     mail   text             createdAt  timestamptz
                            role   text
 ```
 
-Det nye: Den, der er logget ind, er en række i `users` – med samme `id` som i Authentication. Appen opretter rækken, når nogen laver en bruger på `/signup` (opgave 2).
+Det nye: Den, der er logget ind, er en række i `users` – med samme `id` som i Authentication. Appen opretter rækken, når nogen laver en bruger på `/signup`.
 
 Alt i databasen kommer fra én fil: [`supabase/setup.sql`](supabase/setup.sql). Den kan køres igen, hvis du vil starte forfra.
 
@@ -46,7 +48,7 @@ Alt i databasen kommer fra én fil: [`supabase/setup.sql`](supabase/setup.sql). 
 | `/create` | `app/create/page.js` | Opret et post |
 | `/signup` | `app/signup/page.js` | Opret en bruger |
 | `/login` | `app/login/page.js` | Log ind |
-| `/profile` | `app/profile/page.js` | E-mail, bruger-id og log ud · kun logget ind |
+| `/profile` | `app/profile/page.js` | Din række i users og log ud · kun logget ind |
 
 ## Løsninger
 
@@ -55,10 +57,9 @@ Alt i databasen kommer fra én fil: [`supabase/setup.sql`](supabase/setup.sql). 
 | Opgave | Branch | Ændring |
 | --- | --- | --- |
 | 1 · Kom i gang | [main](https://github.com/cederdorff/nextjs-supabase-posts/tree/main) | |
-| 2 · Din række i users | [opgave-02-profil](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-02-profil) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/main...opgave-02-profil) |
-| 3 · Posts får en ejer | [opgave-03-ejer](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-03-ejer) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-02-profil...opgave-03-ejer) |
-| 4 · Kun ejeren kan rette og slette | [opgave-04-kun-ejeren](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-04-kun-ejeren) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-03-ejer...opgave-04-kun-ejeren) |
-| 5 · Beskyt databasen | Ingen kode – et klik i Supabase | |
-| Ekstra · Admin | [ekstra-admin](https://github.com/cederdorff/nextjs-supabase-posts/tree/ekstra-admin) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-04-kun-ejeren...ekstra-admin) |
+| 2 · Posts får en ejer | [opgave-02-ejer](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-02-ejer) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/main...opgave-02-ejer) |
+| 3 · Kun ejeren kan rette og slette | [opgave-03-kun-ejeren](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-03-kun-ejeren) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-02-ejer...opgave-03-kun-ejeren) |
+| 4 · Beskyt databasen | Ingen kode – et klik i Supabase | |
+| Ekstra · Profil og admin | [ekstra](https://github.com/cederdorff/nextjs-supabase-posts/tree/ekstra) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-03-kun-ejeren...ekstra) |
 
 Prøv selv først. Brug løsningen, når du sidder fast, eller når du vil sammenligne med din egen.

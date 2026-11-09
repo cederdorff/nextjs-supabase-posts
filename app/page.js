@@ -3,7 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import styles from "./page.module.css";
 
 export default async function HomePage() {
-  // One query: every post with the user who wrote it, like select=*,user:users(*) in Post App
+  // Every post with the user who wrote it.
+  // In Post App: fetch(`${url}/posts?select=*,user:users(*)&order=createdAt.desc`)
   const supabase = await createClient();
   const { data: posts, error } = await supabase
     .from("posts")

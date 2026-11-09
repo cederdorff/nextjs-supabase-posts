@@ -15,7 +15,7 @@ DROP FUNCTION IF EXISTS public.is_admin();
 -- USERS
 -- The same columns as in Post App – plus role.
 -- Your own users get the same id as their login in auth.users:
--- the app creates the row when someone signs up (task 2).
+-- the app creates the row when someone signs up (app/signup/page.js).
 -- ============================================
 
 CREATE TABLE users (
@@ -70,7 +70,7 @@ GRANT UPDATE (name, title, image) ON users TO anon, authenticated;
 -- POLICIES
 -- The rules are ready, but Row Level Security is off,
 -- so anyone with the publishable key can still change everything.
--- You turn it on in task 5: Authentication → Policies → Enable RLS.
+-- You turn it on in task 4: Authentication → Policies → Enable RLS.
 -- ============================================
 
 ALTER TABLE users DISABLE ROW LEVEL SECURITY;

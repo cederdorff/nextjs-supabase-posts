@@ -19,6 +19,7 @@ export default async function UpdatePage({ params, searchParams }) {
   async function updatePost(formData) {
     "use server";
 
+    // In Post App: fetch(`${url}/posts?id=eq.${id}`, { method: "PATCH", body: JSON.stringify(post) })
     const supabase = await createClient();
     const { error } = await supabase
       .from("posts")

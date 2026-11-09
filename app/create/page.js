@@ -9,6 +9,7 @@ export const metadata = {
 async function createPost(formData) {
   "use server";
 
+  // In Post App: fetch(`${url}/posts`, { method: "POST", body: JSON.stringify(post) })
   const supabase = await createClient();
   const { error } = await supabase.from("posts").insert({
     caption: formData.get("caption").trim(),

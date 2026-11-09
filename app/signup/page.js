@@ -12,16 +12,26 @@ export const metadata = {
 async function signUp(formData) {
   "use server";
 
+  const name = formData.get("name");
   const email = formData.get("email");
   const password = formData.get("password");
 
+  // 1. Create the login in Supabase Auth
   const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({ email, password });
+  const { data, error } = await supabase.auth.signUp({ email, password });
 
   // Something went wrong: back to the form with ?error=true in the URL
   if (error) {
     redirect("/signup?error=true");
   }
+
+  // 2. Create your row in users – with the same id as the login.
+  // In Post App: fetch(`${url}/users`, { method: "POST", body: JSON.stringify(user) })
+  await supabase.from("users").insert({
+    id: data.user.id,
+    name: name,
+    mail: email,
+  });
 
   redirect("/profile");
 }
@@ -46,6 +56,9 @@ export default async function SignUpPage({ searchParams }) {
         </p>
       )}
       <form action={signUp} className="form">
+        <label htmlFor="name">Name</label>
+        <input id="name" name="name" placeholder="Your name" autoComplete="name" required />
+
         <label htmlFor="email">Email</label>
         <input id="email" name="email" type="email" placeholder="you@example.com" autoComplete="email" required />
 

@@ -23,6 +23,7 @@ export default async function PostDetailPage({ params }) {
   async function deletePost() {
     "use server";
 
+    // In Post App: fetch(`${url}/posts?id=eq.${id}`, { method: "DELETE" })
     const supabase = await createClient();
     await supabase.from("posts").delete().eq("id", id);
 
