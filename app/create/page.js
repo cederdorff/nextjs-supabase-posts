@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import SubmitButton from "@/components/SubmitButton";
 import { getCurrentProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
@@ -56,7 +57,7 @@ export default async function CreatePage({ searchParams }) {
         <label htmlFor="caption">Caption</label>
         <textarea id="caption" name="caption" rows="4" placeholder="Write a caption for your post..." required />
 
-        <button type="submit">Save</button>
+        <SubmitButton pendingText="Saving …">Save</SubmitButton>
       </form>
     </main>
   );

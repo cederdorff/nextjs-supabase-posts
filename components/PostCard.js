@@ -1,10 +1,10 @@
-import Link from "next/link";
+import AnimatedCard from "@/components/AnimatedCard";
 import UserBadge from "@/components/UserBadge";
 import styles from "./PostCard.module.css";
 
-export default function PostCard({ post }) {
+export default function PostCard({ post, variant }) {
   return (
-    <Link href={`/posts/${post.id}`} className={styles.card}>
+    <AnimatedCard href={`/posts/${post.id}`} className={styles.card} variant={variant}>
       <div className={styles.header}>
         <UserBadge user={post.user} />
       </div>
@@ -12,6 +12,6 @@ export default function PostCard({ post }) {
       <div className={styles.body}>
         <p>{post.caption}</p>
       </div>
-    </Link>
+    </AnimatedCard>
   );
 }

@@ -63,3 +63,17 @@ Alt i databasen kommer fra én fil: [`supabase/setup.sql`](supabase/setup.sql). 
 | 5 · Profil og roller | [opgave-05-roller](https://github.com/cederdorff/nextjs-supabase-posts/tree/opgave-05-roller) | [diff](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-03-kun-ejeren...opgave-05-roller) |
 
 Prøv selv først. Brug løsningen, når du sidder fast, eller når du vil sammenligne med din egen.
+
+## Motion · 12. november
+
+Branchen [motion](https://github.com/cederdorff/nextjs-supabase-posts/tree/motion) bygger videre på `opgave-05-roller` med tre microinteractions fra [Motion for React](https://motion.dev/docs/react) – se [alt det nye](https://github.com/cederdorff/nextjs-supabase-posts/compare/opgave-05-roller...motion).
+
+| Microinteraction | Fil | Formål |
+| --- | --- | --- |
+| Post-cards løfter sig ved hover og focus | `components/AnimatedCard.js` | Feedback |
+| *Save* skifter til *Saving …* | `components/SubmitButton.js` | Status |
+| *Delete this post?* glider ind og ud | `components/DeleteButton.js` | Bekræftelse |
+
+- Motion-tokens står i `lib/motion.js` og `app/globals.css`.
+- `components/MotionProvider.js` respekterer reduced motion i hele appen.
+- Prøv kortets tre varianter på forsiden: `/?variant=a`, `/?variant=b` og `/?variant=c`.

@@ -5,6 +5,11 @@
   --border: #e5e5e5;
   --surface: #fafafa;
   --accent: #2f54eb;
+
+  /* Motion tokens – the same values as in lib/motion.js */
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -93,6 +98,11 @@ a {
   cursor: pointer;
 }
 
+.form button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
 .form-error {
   margin-bottom: 1rem;
   color: #d4380d;
@@ -108,6 +118,9 @@ a {
   font: inherit;
   text-decoration: none;
   cursor: pointer;
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
 }
 
 .button:hover {
@@ -118,4 +131,23 @@ a {
 .button-danger:hover {
   border-color: #d4380d;
   color: #d4380d;
+}
+
+.button-danger-solid {
+  border-color: #d4380d;
+  background: #d4380d;
+  color: #ffffff;
+}
+
+.button-danger-solid:hover {
+  border-color: #d4380d;
+  color: #ffffff;
+}
+
+/* "Delete this post?" with Yes and Cancel */
+.confirm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
 }
