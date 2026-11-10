@@ -22,16 +22,16 @@ export default async function PostDetailPage({ params }) {
   }
 
   // Is the logged-in user the one who wrote the post?
-  const profile = await getCurrentProfile();
-  const isOwner = profile?.id === post.userId;
+  const currentUser = await getCurrentProfile();
+  const isOwner = currentUser?.id === post.userId;
 
   async function deletePost() {
     "use server";
 
     // Hiding the button is not enough – the Server Action checks again
-    const profile = await getCurrentProfile();
+    const currentUser = await getCurrentProfile();
 
-    if (profile?.id !== post.userId) {
+    if (currentUser?.id !== post.userId) {
       redirect(`/posts/${id}`);
     }
 

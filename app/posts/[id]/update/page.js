@@ -18,18 +18,18 @@ export default async function UpdatePage({ params, searchParams }) {
   }
 
   // Only the one who wrote the post may edit it
-  const profile = await getCurrentProfile();
+  const currentUser = await getCurrentProfile();
 
-  if (profile?.id !== post.userId) {
+  if (currentUser?.id !== post.userId) {
     redirect(`/posts/${id}`);
   }
 
   async function updatePost(formData) {
     "use server";
 
-    const profile = await getCurrentProfile();
+    const currentUser = await getCurrentProfile();
 
-    if (profile?.id !== post.userId) {
+    if (currentUser?.id !== post.userId) {
       redirect(`/posts/${id}`);
     }
 
