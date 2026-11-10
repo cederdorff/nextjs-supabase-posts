@@ -9,18 +9,18 @@ export const metadata = {
 
 export default async function ProfilePage() {
   // Your row from users: id, name, title, image and role
-  const profile = await getCurrentProfile();
+  const currentUser = await getCurrentProfile();
 
-  if (!profile) {
+  if (!currentUser) {
     redirect("/login");
   }
 
   return (
     <main>
       <h1>Profile</h1>
-      <UserBadge user={profile} />
-      <p>Email: {profile.mail}</p>
-      <p>User id: {profile.id}</p>
+      <UserBadge user={currentUser} />
+      <p>Email: {currentUser.mail}</p>
+      <p>User id: {currentUser.id}</p>
       <form action={signOut} className="form">
         <button type="submit">Log out</button>
       </form>
