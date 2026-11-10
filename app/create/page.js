@@ -10,9 +10,9 @@ async function createPost(formData) {
   "use server";
 
   // The Server Action can be called without the page, so it checks the user too
-  const profile = await getCurrentProfile();
+  const currentUser = await getCurrentProfile();
 
-  if (!profile) {
+  if (!currentUser) {
     redirect("/login");
   }
 
@@ -22,7 +22,7 @@ async function createPost(formData) {
     caption: formData.get("caption").trim(),
     image: formData.get("image").trim(),
     // The logged-in user – never an id from the form
-    userId: profile.id,
+    userId: currentUser.id,
   });
 
   if (error) {
@@ -35,9 +35,9 @@ async function createPost(formData) {
 export default async function CreatePage({ searchParams }) {
   const { error } = await searchParams;
 
-  const profile = await getCurrentProfile();
+  const currentUser = await getCurrentProfile();
 
-  if (!profile) {
+  if (!currentUser) {
     redirect("/login");
   }
 
