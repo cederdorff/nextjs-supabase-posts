@@ -66,7 +66,7 @@ export default async function UpdatePage({ params, searchParams }) {
         <label htmlFor="caption">Caption</label>
         <textarea id="caption" name="caption" rows="4" defaultValue={post.caption} required />
 
-        <SubmitButton pendingText="Saving …">Save</SubmitButton>
+        <SubmitButton />
       </form>
     </main>
   );

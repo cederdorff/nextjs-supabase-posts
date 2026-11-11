@@ -7,7 +7,8 @@
   background: var(--surface);
   color: var(--foreground);
   text-decoration: none;
-  transition: border-color var(--duration-fast) var(--ease-out);
+  height: 100%;
+  transition: border-color 0.2s;
 }
 
 .card:hover {

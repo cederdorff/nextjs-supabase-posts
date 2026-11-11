@@ -5,11 +5,6 @@
   --border: #e5e5e5;
   --surface: #fafafa;
   --accent: #2f54eb;
-
-  /* Motion tokens – the same values as in lib/motion.js */
-  --duration-fast: 150ms;
-  --duration-base: 250ms;
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -118,9 +113,6 @@ a {
   font: inherit;
   text-decoration: none;
   cursor: pointer;
-  transition:
-    border-color var(--duration-fast) var(--ease-out),
-    color var(--duration-fast) var(--ease-out);
 }
 
 .button:hover {

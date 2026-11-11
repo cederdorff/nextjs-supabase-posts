@@ -57,7 +57,7 @@ export default async function CreatePage({ searchParams }) {
         <label htmlFor="caption">Caption</label>
         <textarea id="caption" name="caption" rows="4" placeholder="Write a caption for your post..." required />
 
-        <SubmitButton pendingText="Saving …">Save</SubmitButton>
+        <SubmitButton />
       </form>
     </main>
   );
