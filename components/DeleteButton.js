@@ -9,7 +9,7 @@ export default function DeleteButton() {
 
   return (
     <>
-      <button type="button" className="button button-danger" onClick={() => setIsOpen(!isOpen)}>
+      <button type="button" className="button button-danger" onClick={() => setIsOpen(!isOpen)} aria-expanded={isOpen}>
         Delete
       </button>
 

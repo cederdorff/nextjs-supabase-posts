@@ -70,8 +70,8 @@ Branchen [motion](https://github.com/cederdorff/nextjs-supabase-posts/tree/motio
 
 | Microinteraction | Fil | Motion |
 | --- | --- | --- |
-| Post-cards løfter sig ved hover | `components/LiftCard.js` | `whileHover` og `whileTap` |
-| *Save* skifter til *Saving …* | `components/SubmitButton.js` | `whileTap` |
+| Post-cards løfter sig ved hover | `components/PostCard.js` | `whileHover` og `whileTap` |
+| *Save* skifter til *Saving …* | `components/SubmitButton.js` | `whileTap` + `useFormStatus` fra React |
 | *Delete this post?* glider ind og ud | `components/DeleteButton.js` | `AnimatePresence` med `exit` |
 
 `components/MotionProvider.js` respekterer reduced motion i hele appen.
