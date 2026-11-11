@@ -2,10 +2,7 @@ import PostCard from "@/components/PostCard";
 import { createClient } from "@/lib/supabase/server";
 import styles from "./page.module.css";
 
-export default async function HomePage({ searchParams }) {
-  // Try the three versions of the card: /?variant=a, /?variant=b or /?variant=c
-  const { variant } = await searchParams;
-
+export default async function HomePage() {
   // Every post with the user who wrote it.
   // In Post App: fetch(`${url}/posts?select=*,user:users(*)&order=createdAt.desc`)
   const supabase = await createClient();
@@ -27,7 +24,7 @@ export default async function HomePage({ searchParams }) {
 
       <section className={styles.grid}>
         {posts.map((post) => (
-          <PostCard key={post.id} post={post} variant={variant} />
+          <PostCard key={post.id} post={post} />
         ))}
       </section>
     </main>
