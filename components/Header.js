@@ -16,6 +16,9 @@ export default function Header() {
           <li>
             <Link href="/create">Create</Link>
           </li>
+          <li>
+            <Link href="/profile">Profile</Link>
+          </li>
         </ul>
         <AuthStatus />
       </nav>
